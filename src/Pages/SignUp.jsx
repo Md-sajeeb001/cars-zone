@@ -62,6 +62,28 @@ const SignUp = () => {
     createuser(email, password)
       .then((result) => {
         console.log(result.user);
+        const createAt = result.user.metadata.lastSignInTime;
+        const newUser = {
+          name,
+          email,
+          photo,
+          male,
+          female,
+          checkbox,
+          createAt,
+        };
+
+        fetch("http://localhost:5000/users", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+          });
 
         upDateuser({ displayName: name, photoURL: photo })
           .then((res) => {

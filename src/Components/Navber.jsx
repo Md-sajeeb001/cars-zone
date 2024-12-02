@@ -54,12 +54,22 @@ const Navber = () => {
             {links}
           </ul>
         </div>
-       <div className="flex items-center gap-3">
-        <img className="w-14 h-14 object-cover rounded-full" src={user && user.photoURL} alt="" />
-       <Link to="/" className="btn btn-ghost text-xl">
-          {user && user.displayName}
-        </Link>
-       </div>
+        <div>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <img
+                className="w-14 h-14 object-cover rounded-full"
+                src={user && user.photoURL}
+                alt=""
+              />
+              <Link to="/" className="btn btn-ghost text-xl">
+                {user && user.displayName}
+              </Link>
+            </div>
+          ) : (
+            <Link to="/" className="text-xl font-bold">Car Zone</Link>
+          )}
+        </div>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
@@ -85,7 +95,10 @@ const Navber = () => {
               </span>
               <span>Sign Up</span>
             </Link>
-            <Link to="/signin" className="btn bg-orange-400 text-white border-2 hover:text-orange-400 border-orange-400 hover:border-orange-500">
+            <Link
+              to="/signin"
+              className="btn bg-orange-400 text-white border-2 hover:text-orange-400 border-orange-400 hover:border-orange-500"
+            >
               Log in
             </Link>
           </div>

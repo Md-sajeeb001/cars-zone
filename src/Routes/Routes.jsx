@@ -5,6 +5,7 @@ import AddCars from "../Pages/AddCars";
 import UpDateCars from "../Pages/UpDateCars";
 import SignUp from "../Pages/SignUp";
 import SignIn from "../Pages/SignIn";
+import PrivateRoute from "../Private/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -18,12 +19,21 @@ const router = createBrowserRouter([
       },
       {
         path: "/addcars",
-        element: <AddCars></AddCars>,
+        element: (
+          <PrivateRoute>
+            <AddCars></AddCars>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/updatedcars/:id",
-        element: <UpDateCars></UpDateCars>,
-        loader: ({params})=> fetch(`http://localhost:5000/cars/${params.id}`)
+        element: (
+          <PrivateRoute>
+            <UpDateCars></UpDateCars>
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/cars/${params.id}`),
       },
       {
         path: "/signup",

@@ -15,20 +15,28 @@ const SignIn = () => {
     const Confirmpassword = e.target.Confirmpassword.value;
     const password = e.target.password.value;
 
-    console.log(name, email, Confirmpassword, password);
+    if (name.length < 2) {
+      Swal.fire({
+        title: "error",
+        text: `name must be above 2 character`,
+        icon: "error",
+        confirmButtonText: "Cool",
+      });
+      return;
+    }
 
-    const newUser = {
-      name,
-      email,
-      Confirmpassword,
-      password,
-    };
-
-    console.log(newUser);
+    if (password !== Confirmpassword) {
+      Swal.fire({
+        title: "error",
+        text: `please provid a valid password`,
+        icon: "error",
+        confirmButtonText: "Cool",
+      });
+      return;
+    }
 
     signInUser(email, password)
       .then((result) => {
-        console.log(result.user);
         if (result.user) {
           Swal.fire({
             title: "success",
@@ -40,7 +48,6 @@ const SignIn = () => {
         }
       })
       .catch((error) => {
-        console.log(error.message);
         if (error) {
           Swal.fire({
             title: "error",

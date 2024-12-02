@@ -18,16 +18,6 @@ const SignUp = () => {
     const male = e.target.male.checked;
     const female = e.target.female.checked;
     const checkbox = e.target.checkbox.checked;
-    console.log(
-      checkbox,
-      male,
-      female,
-      name,
-      email,
-      Confirmpassword,
-      password,
-      photo
-    );
 
     if (password !== Confirmpassword) {
       Swal.fire({

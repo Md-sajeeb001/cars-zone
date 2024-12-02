@@ -1,10 +1,13 @@
 /* eslint-disable react/prop-types */
 
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { AuthContext } from "../Providers/AuthProviders";
 
 // eslint-disable-next-line react/prop-types
 const CarCard = ({ car, setCars, cars }) => {
+  const { user } = useContext(AuthContext);
   const { name, price, category, photo, _id } = car;
 
   const handelRemove = (_id) => {
@@ -23,7 +26,6 @@ const CarCard = ({ car, setCars, cars }) => {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
             if (data.deletedCount) {
               Swal.fire({
                 title: "Deleted!",
@@ -49,12 +51,21 @@ const CarCard = ({ car, setCars, cars }) => {
         <p>{category}</p>
         <p>Price: {price}</p>
         <div className="card-actions justify-end">
-          <button
-            onClick={() => handelRemove(_id)}
-            className="btn bg-[#2b3440] text-white hover:text-[#2b3440]"
-          >
-            remove
-          </button>
+          {user ? (
+            <button
+              onClick={() => handelRemove(_id)}
+              className="btn bg-[#2b3440] text-white hover:text-[#2b3440]"
+            >
+              Remove
+            </button>
+          ) : (
+            <Link
+              className="btn bg-[#2b3440] text-white hover:text-[#2b3440]"
+              to="/signup"
+            >
+              Remove
+            </Link>
+          )}
           <button>
             <Link
               to={`/updatedcars/${_id}`}

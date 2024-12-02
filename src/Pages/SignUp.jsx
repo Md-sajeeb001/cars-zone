@@ -1,50 +1,106 @@
 import { useContext } from "react";
 import { AuthContext } from "../Providers/AuthProviders";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
-  const { createuser } = useContext(AuthContext);
+  const { createuser, upDateuser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handelCreateUser = (e) => {
     e.preventDefault();
 
     const name = e.target.name.value;
     const email = e.target.email.value;
-    const Confirmemail = e.target.Confirmemail.value;
+    const Confirmpassword = e.target.Confirmpassword.value;
     const password = e.target.password.value;
     const photo = e.target.photo.value;
-    const checkbox = e.target.checkbox.checked;
     const male = e.target.male.checked;
     const female = e.target.female.checked;
+    const checkbox = e.target.checkbox.checked;
     console.log(
       checkbox,
       male,
       female,
       name,
       email,
-      Confirmemail,
+      Confirmpassword,
       password,
       photo
     );
 
-    const newUser = {
-      checkbox,
-      male,
-      female,
-      name,
-      email,
-      Confirmemail,
-      password,
-      photo,
-    };
+    if (password !== Confirmpassword) {
+      Swal.fire({
+        title: "error",
+        text: `please provid a valid password`,
+        icon: "error",
+        confirmButtonText: "Cool",
+      });
+      return;
+    }
 
-    console.log(newUser);
+    if (password < 6) {
+      Swal.fire({
+        title: "error",
+        text: ` password should be above 6 character`,
+        icon: "error",
+        confirmButtonText: "Cool",
+      });
+      return;
+    }
+
+    if (!female && !male) {
+      Swal.fire({
+        title: "error",
+        text: `please select your Gender`,
+        icon: "error",
+        confirmButtonText: "Cool",
+      });
+      return;
+    }
+
+    if (!checkbox) {
+      Swal.fire({
+        title: "error",
+        text: `please accept out terms and conditon also privacy and policy`,
+        icon: "error",
+        confirmButtonText: "Cool",
+      });
+      return;
+    }
 
     createuser(email, password)
       .then((result) => {
-        console.log(result);
+        console.log(result.user);
+
+        upDateuser({ displayName: name, photoURL: photo })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+
+        if (result.user) {
+          Swal.fire({
+            title: "success",
+            text: "user sign up successfully",
+            icon: "success",
+            confirmButtonText: "Cool",
+          });
+          navigate("/");
+        }
       })
       .catch((error) => {
-        console.log(error.message);
+        if (error) {
+          Swal.fire({
+            title: "error",
+            text: `${error.message}`,
+            icon: "error",
+            confirmButtonText: "Cool",
+          });
+          return;
+        }
       });
   };
 
@@ -82,12 +138,12 @@ const SignUp = () => {
 
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Confirm Email</span>
+            <span className="label-text">Password</span>
           </label>
           <input
-            name="Confirmemail"
-            type="text"
-            placeholder="Confirm email"
+            name="password"
+            type="password"
+            placeholder="password"
             className="input input-bordered"
             required
           />
@@ -95,12 +151,12 @@ const SignUp = () => {
 
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Password</span>
+            <span className="label-text">Confirm Password</span>
           </label>
           <input
-            name="password"
+            name="Confirmpassword"
             type="password"
-            placeholder="password"
+            placeholder="Confirm password"
             className="input input-bordered"
             required
           />
@@ -147,6 +203,12 @@ const SignUp = () => {
         <div className="form-control mt-6">
           <button className="btn btn-primary">Sign Up</button>
         </div>
+        <p className="text-center pt-5">
+          Already Have an Account?{" "}
+          <Link className=" hover:text-rose-600 hover:underline" to="/signin">
+            Sign in
+          </Link>
+        </p>
       </form>
     </div>
   );

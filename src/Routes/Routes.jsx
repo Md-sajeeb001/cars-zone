@@ -4,7 +4,7 @@ import Home from "../Pages/Home";
 import AddCars from "../Pages/AddCars";
 import UpDateCars from "../Pages/UpDateCars";
 import SignUp from "../Pages/SignUp";
-import About from "../Components/About";
+import SignIn from "../Pages/SignIn";
 
 const router = createBrowserRouter([
   {
@@ -12,10 +12,9 @@ const router = createBrowserRouter([
     element: <MainLayOut></MainLayOut>,
     children: [
       {
-        // path: "",
-        index: true,
-        element: <About></About>,
-        // loader: () => fetch("http://localhost:5000/cars"),
+        path: "/",
+        element: <Home></Home>,
+        loader: () => fetch("http://localhost:5000/cars"),
       },
       {
         path: "/addcars",
@@ -29,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignUp></SignUp>,
+      },
+      {
+        path: "/signin",
+        element: <SignIn></SignIn>,
       },
     ],
   },

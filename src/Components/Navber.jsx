@@ -1,17 +1,34 @@
 import { Link, NavLink } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
+import { useContext } from "react";
+import { AuthContext } from "../Providers/AuthProviders";
 
 const Navber = () => {
+  const { user, signOutUser } = useContext(AuthContext);
 
-    const links = <>
-    
-    <li><NavLink to="/">Home</NavLink></li>
-    <li><NavLink to="/addcars">Add Cars</NavLink></li>
-    
+  const links = (
+    <>
+      <li>
+        <NavLink to="/">Home</NavLink>
+      </li>
+      <li>
+        <NavLink to="/addcars">Add Cars</NavLink>
+      </li>
     </>
+  );
+
+  const handelSignOut = () => {
+    signOutUser()
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
   return (
-    <div className="navbar bg-base-100 border-b border-b-[#2b3440]">
+    <div className="navbar bg-base-100 border-b border-b-[#2b3440] px-14">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -34,21 +51,45 @@ const Navber = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
-           {links}
+            {links}
           </ul>
         </div>
-        <Link to="/" className="btn btn-ghost text-xl">daisyUI</Link>
+       <div className="flex items-center gap-3">
+        <img className="w-14 h-14 object-cover rounded-full" src={user && user.photoURL} alt="" />
+       <Link to="/" className="btn btn-ghost text-xl">
+          {user && user.displayName}
+        </Link>
+       </div>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-         {links}
-        </ul>
+        <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
       <div className="navbar-end">
-        <Link to="/signup" className="btn bg-orange-400 text-white border-2 hover:text-orange-400 border-orange-400 hover:border-orange-500">
-            <span><FaUser></FaUser></span>
-            <span>Sign Up</span>
-        </Link>
+        {user ? (
+          <div>
+            <Link
+              onClick={handelSignOut}
+              className="btn bg-orange-400 text-white border-2 hover:text-orange-400 border-orange-400 hover:border-orange-500"
+            >
+              Log Out
+            </Link>
+          </div>
+        ) : (
+          <div className="flex items-center gap-5">
+            <Link
+              to="/signup"
+              className="btn bg-orange-400 text-white border-2 hover:text-orange-400 border-orange-400 hover:border-orange-500"
+            >
+              <span>
+                <FaUser></FaUser>
+              </span>
+              <span>Sign Up</span>
+            </Link>
+            <Link to="/signin" className="btn bg-orange-400 text-white border-2 hover:text-orange-400 border-orange-400 hover:border-orange-500">
+              Log in
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

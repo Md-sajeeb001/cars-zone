@@ -16,7 +16,6 @@ const Home = () => {
           setCars={setCars}
         ></CarCard>
       ))}
-
     </div>
   );
 };

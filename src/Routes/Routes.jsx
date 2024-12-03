@@ -6,6 +6,7 @@ import UpDateCars from "../Pages/UpDateCars";
 import SignUp from "../Pages/SignUp";
 import SignIn from "../Pages/SignIn";
 import PrivateRoute from "../Private/PrivateRoute";
+import Users from "../Pages/Users";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,11 @@ const router = createBrowserRouter([
       {
         path: "/signin",
         element: <SignIn></SignIn>,
+      },
+      {
+        path: "/users",
+        element: <Users></Users>,
+        loader: () => fetch("http://localhost:5000/users"),
       },
     ],
   },

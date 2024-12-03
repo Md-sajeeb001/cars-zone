@@ -13,7 +13,7 @@ export const AuthContext = createContext(null);
 
 const AuthProviders = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const createuser = (email, password) => {
     setLoading(true);
